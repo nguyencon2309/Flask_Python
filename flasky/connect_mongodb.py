@@ -10,10 +10,5 @@ client = MongoClient('mongodb://localhost:27017/')
 # Create database named demo if they don't exist already 
 db = client['db_flask'] 
 
-# Create collection named data if it doesn't exist already 
-collection = db['test'] 
-
-col_employee = db['employee']
-col_dep = db['department']
-# for i in rs:
-# 	print(i["text"])
+col_employee = db['employee']#get collection employee
+col_dep = db['department']#get collection department

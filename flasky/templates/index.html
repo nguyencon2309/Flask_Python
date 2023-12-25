@@ -94,15 +94,29 @@
 
                     <div class="mb-3 ">
                         <label for="department">Departments</label>
-                        <select name="emp_department" id="department" class="form-control">
+                        <select name="department_emp" id="department_emp" class="form-control">
 
                             {% for dep in deps %}
 
-                            {% if dep.name_depart==employee.department %}
-                            <option value={{dep.name_depart}} selected>{{dep.name_depart}}</option>
+                            {% if dep.name_depart==employee.department %}  
+                            <option value={{dep.name_depart}}
+                            
+                             selected 
+
+                             
+                            >{{dep.name_depart}}</option>
+
                             {% else %}
-                            <option value={{dep.name_depart}} >{{dep.name_depart}}</option>
+
+                            <option value={{dep.name_depart}}
+                            
+                             
+                            >{{dep.name_depart}}</option>
+
+
                             {% endif %}
+                            
+                            
                             
                             {% endfor %}
                         </select>

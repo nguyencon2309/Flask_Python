@@ -1,6 +1,6 @@
 from flask import Flask,render_template,request,url_for,redirect,flash
 
-from test_mongo import collection,col_employee,col_dep
+from connect_mongodb import col_employee,col_dep
 
 
 from bson import ObjectId
@@ -11,36 +11,12 @@ from bson import ObjectId
 app = Flask(__name__)
 app.secret_key = "chuoi-bi-mat"
 
-# os.environ['DEBUG'] = 'True'
 
 
 
-@app.route("/home")
-def home():
-    
-    rs = list(collection.find())
-    return render_template('todo.html',incomplete=rs)
-
-@app.route("/add",methods=['POST'])
-def add():
-    text = request.form["text-todo"]
-
-    print(text)
-
-    collection.insert_one({"text":text})
-    return redirect(url_for('home')) 
-
-# @app.route("/")
-# def index():
-#     return '<h1>Hello, World!</h1>'
-
-@app.route("/user/<name>")
-def user(name):
-    return '<h1>Hello, %s!</h1>' % name
 
 
-
-@app.route("/index")
+@app.route("/")
 def index():
     list_employee = list(col_employee.find())
     list_dep = list(col_dep.find())
@@ -71,6 +47,7 @@ def delete(_id):
 @app.route("/update/<_id>",methods=["GET", "POST"]) 
 def update(_id):
     if request.method=='POST':
+        depart = request.form['department_emp']
         col_employee.update_one(
             {"_id":ObjectId(_id)},
             {
@@ -78,7 +55,8 @@ def update(_id):
                     
                     "name":request.form['name'],
                     "phone":request.form['phone'],
-                    "email":request.form['email']
+                    "email":request.form['email'],
+                    "department":depart
                     
                 }
             }
