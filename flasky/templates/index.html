@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% include 'header.html' %}
+
+
+{% block title %} Home {% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+
+                <h2> Manage <b> Employees</b> <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#mymodal">Add New Employees</button></h2>
+
+
+                {% for message in get_flashed_messages() %}
+
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-bs-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    {{message}}
+                </div>
+                
+
+                
+                {% endfor %}
+
+                <table class="table table-hover table-dark">
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for employee in Employees %} 
+                    <tr>
+                        <th>{{employee.id}}</th>
+                        <th>{{employee.name}}</th>
+                        <th>{{employee.email}}</th>
+                        
+                        <th>{{employee.phone}}</th>
+                        <th>{{employee.department}}</th>
+                        <th>
+                            <a href="" class="btn btn-warning btn-xs" data-bs-toggle='modal'
+                            data-bs-target="#modaledit{{employee._id}}">Edit</a>
+
+                            <a href='delete/{{employee._id}}' class="btn btn-danger btn-xs"
+                            onclick="return confirm('Bạn có chắc chắn muốn xoá không')">Delete</a>
+                        </th>
+                    </tr>
+
+
+                    
+<div id="modaledit{{employee._id}}" class="modal fade " role="dialog">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Employee</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{ url_for('update',_id=employee._id) }}" method="post">
+
+                    <div class="form-group">
+                        <label >Name:</label>
+
+                        <input type="text" class="form-control" value="{{employee.name}}" name="name" required="1">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+
+                        <input type="text" class="form-control" value="{{employee.email}}" name="email" required="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label >Phone:</label>
+
+                        <input type="text" class="form-control" value="{{employee.phone}}" name="phone" required="1">
+                    </div>
+
+                    <div class="mb-3 ">
+                        <label for="department">Departments</label>
+                        <select name="emp_department" id="department" class="form-control">
+
+                            {% for dep in deps %}
+
+                            {% if dep.name_depart==employee.department %}
+                            <option value={{dep.name_depart}} selected>{{dep.name_depart}}</option>
+                            {% else %}
+                            <option value={{dep.name_depart}} >{{dep.name_depart}}</option>
+                            {% endif %}
+                            
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Update Employee</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+                    {% endfor %}
+
+                </table>
+            </div>
+
+            <div id="mymodal" class="modal fade " role="dialog">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add Employee</h4>
+                        </div>
+            
+                        <div class="modal-body">
+                            <form action="{{ url_for('insert') }}" method="post">
+
+                                <div class="form-group">
+                                    <label >ID:</label>
+            
+                                    <input type="text" class="form-control" name="id" required="1">
+                                </div>
+            
+                                <div class="form-group">
+                                    <label >Name:</label>
+            
+                                    <input type="text" class="form-control" name="name" required="1">
+                                </div>
+            
+            
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+            
+                                    <input type="text" class="form-control" name="email" required="1">
+                                </div>
+            
+                                <div class="form-group">
+                                    <label >Phone:</label>
+            
+                                    <input type="text" class="form-control" name="phone" required="1">
+                                </div>
+
+                                <div class="mb-3 ">
+                                    <label for="department">Departments</label>
+                                    <select name="emp_department" id="department" class="form-control">
+
+                                        {% for dep in deps %}
+
+                                        <option value="{{dep.name_depart}}">{{dep.name_depart}}</option>
+                                        
+                                        {% endfor %}
+                                    </select>
+                                </div>
+            
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Add Employee</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+
+
+            
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

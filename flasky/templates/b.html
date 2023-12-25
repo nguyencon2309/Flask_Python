@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="myfunction()">Hide element</button>
+    <button onclick="myf()">unhide</button>
+    <p class="test">python</p>
+    <p class="test">html</p>
+    <p class="test">css{{fav}}</p>
+    
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('image') }}">Image</a>
+    <script>
+        function myfunction(){
+            var x = document.getElementsByClassName('test');
+            console.log(x);
+            for(var i=0;i<x.length;i++){
+                x[i].style.display= 'none'
+            }
+        }
+        function myf(){
+            var x = document.getElementsByClassName('test')
+            for(var i=0;i<x.length;i++)
+                x[i].style.display = 'block'
+
+        }
+
+    </script>
+</body>
+</html>
