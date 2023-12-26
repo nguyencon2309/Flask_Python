@@ -65,6 +65,20 @@ def insert():
     return redirect(url_for('index'))
 
 
+
+
+@app.route("/add_department",methods=["GET", "POST"])
+def add_department():
+    name= request.form['name_depa']
+    mota = request.form['des']
+
+     
+    col_dep.insert_one({'name_depart':name,"mota":mota})
+    flash("add new depart successfully","success")
+
+    return redirect(url_for('index'))
+
+
 @app.route("/delete/<_id>")
 def delete(_id):
     col_employee.delete_one({"_id":ObjectId(_id)})
