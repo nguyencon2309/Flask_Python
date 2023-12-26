@@ -1,6 +1,13 @@
-from flask import Flask,render_template,request,url_for,redirect,flash
+from flask import Flask,render_template,request,url_for,redirect,flash,g, make_response
 
-from connect_mongodb import col_employee,col_dep
+
+
+from flask_login import login_user, logout_user, current_user, login_required, LoginManager
+from forms import SignupForm, LoginForm
+
+from connect_mongodb import col_employee,col_dep,col_user
+
+
 
 
 from bson import ObjectId
@@ -10,6 +17,23 @@ from bson import ObjectId
 
 app = Flask(__name__)
 app.secret_key = "chuoi-bi-mat"
+
+# lm = LoginManager()
+# lm.init_app(app)
+# lm.login_view = 'login'
+
+
+
+
+# @lm.user_loader
+# def load_user(user_id):
+#     return col_user.find_one({"_id":ObjectId(user_id)})
+
+# @app.before_request
+# def before_request():
+#     g.user = current_user
+
+
 
 
 
@@ -30,11 +54,15 @@ def insert():
     email = request.form['email']
     department = request.form['emp_department']
 
-    col_employee.insert_one({'id':id,'name':name,'phone':phone,'email':email,'department':department})
+    rs = list(col_employee.find({"id":id}))
+    if len(rs)>0 :
+        flash("ID employee already exist!!!","erorr")
 
-    flash("add new employee successfully")
+    else :    
+        col_employee.insert_one({'id':id,'name':name,'phone':phone,'email':email,'department':department})
+        flash("add new employee successfully","success")
 
-    return redirect(url_for('index')) 
+    return redirect(url_for('index'))
 
 
 @app.route("/delete/<_id>")
@@ -65,18 +93,6 @@ def update(_id):
     return redirect(url_for('index')) 
 
 
-@app.route("/contact")
-def contact():
-    return render_template('contact.html')
-
-
-@app.route("/about")
-def about():
-    return render_template('about.html')
-
-@app.route("/base")
-def base():
-    return render_template('base.html')
 app.config['DEBUG'] = True
 if __name__ == "__main__":
     app.run(debug=True)
